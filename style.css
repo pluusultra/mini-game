@@ -6,8 +6,14 @@ body {
   justify-content: center;
 }
 
+*::before,
+*::after,
+* {
+  box-sizing: border-box;
+}
+
 .game-wrapper {
-  width: 500px;
+  width: 900px;
   background-color: yellow;
   min-height: 100vh;
 }
@@ -16,7 +22,7 @@ body {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 70px 1fr 70px;
+  grid-template-columns: 130px 1fr 130px;
 }
 .game__grass {
   background-color: rgb(72, 79, 1);
@@ -28,21 +34,20 @@ body {
   justify-content: center;
   align-items: center;
   justify-items: center;
+  border-left: 10px solid rgba(255, 255, 255, 0.8);
+  border-right: 10px solid rgba(255, 255, 255, 0.8);
 }
 .game__road-markings {
   height: 100%;
   width: 100%;
 }
 .game__road-markings:nth-of-type(2) {
-  border: 5px dashed rgba(255, 255, 255, 0.27);
+  border-right: 5px dashed rgba(255, 255, 255, 0.27);
+  border-left: 5px dashed rgba(255, 255, 255, 0.27);
 }
 .game__car {
-  width: 50px;
-  height: 100px;
   position: absolute;
-  left: calc(50% - 25px);
-  bottom: 0;
-  background-color: tomato;
+  bottom: 25px;
   border-radius: 10px;
   transition-duration: 0.1s;
   will-change: transform;
