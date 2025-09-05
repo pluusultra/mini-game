@@ -1,0 +1,65 @@
+:root {
+  --roadColor: rgb(97, 97, 98);
+  --grassColor: rgba(136, 152, 47, 0.76);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+*::before, *::after, * {
+  box-sizing: border-box;
+}
+
+.game-wrapper {
+  background-color: var(--grassColor);
+  min-height: 100vh;
+  background-image: url("../images/background.jpg");
+}
+
+.road {
+  min-height: 100vh;
+  width: 600px;
+  background-color: var(--roadColor);
+  margin-inline: auto;
+}
+
+.player {
+  object-fit: contain;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tree {
+  object-fit: contain;
+  position: absolute;
+}
+
+.tree1 {
+  transform: translate(-27vh, -14vh);
+}
+
+.tree2 {
+  transform: translate(-35vh, 30vh);
+}
+
+.tree3 {
+  transform: translate(-33vh, 70vh);
+}
+
+.tree4 {
+  transform: translate(58vh, 70vh);
+}
+
+.tree5 {
+  transform: translate(58vh, 23vh);
+}
+
+.tree6 {
+  transform: translate(58vh, -30vh);
+}
+
+/*# sourceMappingURL=styles.css.map */
