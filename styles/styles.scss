@@ -4,7 +4,7 @@
 .game-wrapper {
   background-color: var(--grassColor);
   min-height: 100vh;
-  background-image: url('../images/background.jpg');
+  overflow: hidden;
 }
 
 .road {
@@ -28,25 +28,25 @@
 }
 
 .tree1 {
-  transform: translate(-27vh, -14vh)
+  transform: translate(-27vh, -14vh);
 }
 
 .tree2 {
-  transform: translate(-35vh, 30vh)
+  transform: translate(-30vh, 30vh);
 }
 
 .tree3 {
-  transform: translate(-33vh, 70vh)
+  transform: translate(54vh, -30vh);
 }
 
 .tree4 {
-  transform: translate(58vh, 70vh)
+  transform: translate(58vh, 13vh);
 }
 
 .tree5 {
-  transform: translate(58vh, 23vh)
+  transform: translate(54vh, 55vh);
 }
 
 .tree6 {
-  transform: translate(58vh, -30vh)
+  transform: translate(-33vh, 70vh);
 }
