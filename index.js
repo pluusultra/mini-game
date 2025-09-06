@@ -1,7 +1,11 @@
 const trees = document.querySelectorAll('.tree')
 const player = document.querySelector('.player')
+const road = document.querySelector('.road')
 
+const roadWidth = road.clientWidth / 2
+const playerWidth = player.clientWidth / 2
 let speed = 2;
+
 let animationId = null
 const moveStatus = {
     moveRight: null,
@@ -35,14 +39,28 @@ document.addEventListener('keyup', (event) => {
 })
 
 function startMoveToRight () {
-    const currentCords = getCoords(player)
-    player.style.transform = `translateX(${currentCords.x + 2}px)`
+    const currentCoords = getCoords(player)
+    console.log('currentCoords X: ', currentCoords.x)
+    console.log(roadWidth)
+    
+    if (currentCoords.x > roadWidth - playerWidth) {
+        return
+    }
+    
+    player.style.transform = `translateX(${currentCoords.x + 2}px)`
     moveStatus.moveRight = requestAnimationFrame(startMoveToRight)
 }
 
 function startMoveToLeft () {
-    const currentCords = getCoords(player)
-    player.style.transform = `translateX(${currentCords.x - 2}px) scaleX(-1)`
+    const currentCoords = getCoords(player)
+
+    console.log('currentCoords X: ', currentCoords.x)
+    console.log(roadWidth)
+
+    if (currentCoords.x < -roadWidth - playerWidth) {
+        return
+    }
+    player.style.transform = `translateX(${currentCoords.x - 2}px) scaleX(-1)`
     moveStatus.moveLeft = requestAnimationFrame(startMoveToLeft)
 }
 
