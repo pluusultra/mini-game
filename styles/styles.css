@@ -27,11 +27,10 @@ body {
 }
 
 .player {
-  object-fit: contain;
+  object-fit: cover;
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  transform: translateY(calc(100vh - 150px));
+  border: 1px solid red;
 }
 
 .tree {
@@ -66,6 +65,7 @@ body {
 .coin {
   position: absolute;
   transform: translate(50px, -150px);
+  border: 1px solid red;
 }
 
 /*# sourceMappingURL=styles.css.map */
