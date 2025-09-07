@@ -1,23 +1,26 @@
 const trees = document.querySelectorAll('.tree')
-const player = document.querySelector('.player')
 const road = document.querySelector('.road')
 const coin = document.querySelector('.coin')
 
+const player = document.querySelector('.player')
+const playerInfo = {
+    width: coin.clientWidth / 2,
+    height: player.clientHeight,
+    coords: getCoords(player),
+    move: {
+        moveRight: null,
+        moveLeft: null,
+    },
+}
+
 const roadWidth = road.clientWidth / 2
-const playerWidth = player.clientWidth / 2
 const coinCoords = getCoords(coin)
-const playerCoords = getCoords(player)
-const playerHeight = player.clientHeight
 const coinWidth = coin.clientWidth / 2
 const coinHeight = coin.clientHeight
 let speed = 10;
 const treesCoords = []
 
 let animationId = null
-const moveStatus = {
-    moveRight: null,
-    moveLeft: null,
-}
 
 trees.forEach(tree => {
     const coordsTree = getCoords(tree)
@@ -27,36 +30,36 @@ trees.forEach(tree => {
 
 document.addEventListener('keydown', (event) => {
     if (event.code === 'KeyD' || event.code === 'ArrowRight') {
-        if (!moveStatus.moveRight) {
-            moveStatus.moveRight = requestAnimationFrame(startMoveToRight)
+        if (!playerInfo.move.moveRight) {
+            playerInfo.move.moveRight = requestAnimationFrame(startMoveToRight)
         }
     }
 
     if (event.code === 'KeyA' || event.code === 'ArrowLeft') {
-        if (!moveStatus.moveLeft) {
-            moveStatus.moveLeft = requestAnimationFrame(startMoveToLeft)
+        if (!playerInfo.move.moveLeft) {
+            playerInfo.move.moveLeft = requestAnimationFrame(startMoveToLeft)
         }
     }
 })
 
 document.addEventListener('keyup', (event) => {
     if (event.code === 'KeyD' || event.code === 'ArrowRight') {
-        cancelAnimationFrame(moveStatus.moveRight)
-        moveStatus.moveRight = null
+        cancelAnimationFrame(playerInfo.move.moveRight)
+        playerInfo.move.moveRight = null
     }
 
     if (event.code === 'KeyA' || event.code === 'ArrowLeft') {
-        cancelAnimationFrame(moveStatus.moveLeft)
-        moveStatus.moveLeft = null
+        cancelAnimationFrame(playerInfo.move.moveLeft)
+        playerInfo.move.moveLeft = null
     }
 })
 
 function checkCollision() {
-    const playerYTop = playerCoords.y
-    const playerYBottom = playerCoords.y + playerHeight;
+    const playerYTop = playerInfo.coords.y
+    const playerYBottom = playerInfo.coords.y + playerInfo.height;
 
-    const playerXLeft = playerCoords.x - playerWidth;
-    const playerXRight = playerCoords.x + playerWidth;
+    const playerXLeft = playerInfo.coords.x - playerInfo.width;
+    const playerXRight = playerInfo.coords.x + playerInfo.width;
 
     const coinYTop = coinCoords.y;
     const coinYBottom = coinCoords.y + coinHeight;
@@ -76,24 +79,24 @@ function checkCollision() {
 }
 
 function startMoveToRight () {
-    if (playerCoords.x > roadWidth - playerWidth) {
+    if (playerInfo.coords.x > roadWidth - playerInfo.width) {
         return
     }
 
-    player.style.transform = `translate(${playerCoords.x + 5}px, ${playerCoords.y}px)`
-    playerCoords.x += 5
-    moveStatus.moveRight = requestAnimationFrame(startMoveToRight)
+    player.style.transform = `translate(${playerInfo.coords.x + 5}px, ${playerInfo.coords.y}px)`
+    playerInfo.coords.x += 5
+    playerInfo.move.moveRight = requestAnimationFrame(startMoveToRight)
 }
 
 function startMoveToLeft () {
 
 
-    if (playerCoords.x < -roadWidth + playerWidth) {
+    if (playerInfo.coords.x < -roadWidth + playerInfo.width) {
         return
     }
-    player.style.transform = `translate(${playerCoords.x - 5}px, ${playerCoords.y}px) scaleX(-1)`
-    playerCoords.x -= 5;
-    moveStatus.moveLeft = requestAnimationFrame(startMoveToLeft)
+    player.style.transform = `translate(${playerInfo.coords.x - 5}px, ${playerInfo.coords.y}px) scaleX(-1)`
+    playerInfo.coords.x -= 5;
+    playerInfo.move.moveLeft = requestAnimationFrame(startMoveToLeft)
 }
 
 function startGame() {
