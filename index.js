@@ -2,6 +2,8 @@ const trees = document.querySelectorAll('.tree')
 const road = document.querySelector('.road')
 const coin = document.querySelector('.coin')
 const player = document.querySelector('.player')
+const gameScoreElement = document.querySelector('.game-score')
+let gameScore = 0
 
 const playerInfo = {
     ...createElementInfo(player),
@@ -13,7 +15,8 @@ const playerInfo = {
 const coinInfo = createElementInfo(coin)
 
 const roadWidth = road.clientWidth / 2
-let speed = 10;
+let speed = 12;
+let playerSpeed = 8;
 const treesCoords = []
 
 let animationId = null
@@ -55,6 +58,7 @@ function createElementInfo (element) {
         coords: getCoords(element),
         width: element.clientWidth / 2,
         height: element.clientHeight,
+        visible: true,
     }
 }
 
@@ -87,7 +91,7 @@ function startMoveToRight () {
         return
     }
 
-    playerInfo.coords.x += 5
+    playerInfo.coords.x += playerSpeed;
     movePlayer(playerInfo.coords.x, playerInfo.coords.y)
     playerInfo.move.moveRight = requestAnimationFrame(startMoveToRight)
 }
@@ -98,7 +102,7 @@ function startMoveToLeft () {
     if (playerInfo.coords.x < -roadWidth + playerInfo.width) {
         return
     }
-    playerInfo.coords.x -= 5;
+    playerInfo.coords.x -= playerSpeed;
     movePlayer(playerInfo.coords.x, playerInfo.coords.y, 'left')
     playerInfo.move.moveLeft = requestAnimationFrame(startMoveToLeft)
 }
@@ -113,9 +117,14 @@ function movePlayer (x, y, side) {
 }
 
 function startGame() {
-    console.log(checkCollision(playerInfo, coinInfo))
+    if (coinInfo.visible && checkCollision(playerInfo, coinInfo)) {
+        gameScore++
+        coin.style.display = 'none';
+        coinInfo.visible = false;
+        updateGameScore(gameScore)
+    }
     treesAnimation()
-    elementAnimation(coin, coinInfo.coords, coinInfo.width, 1000)
+    elementAnimation(coin, coinInfo, 1000)
     animationId = requestAnimationFrame(startGame)
 }
 
@@ -133,20 +142,22 @@ function getCoords(item) {
     }
 }
 
-function elementAnimation(element, elementCoords, elementWidth, innitialCoordY) {
-    let newCoordY = elementCoords.y + speed;
-    let newCoordX = elementCoords.x;
+function elementAnimation(element, elementInfo, innitialCoordY) {
+    let newCoordY = elementInfo.coords.y + speed;
+    let newCoordX = elementInfo.coords.x;
 
     if (newCoordY > window.innerHeight) {
         const direction = Math.floor(Math.random() * 2)
-        const maxXCord = (roadWidth + 1 - elementWidth)
+        const maxXCord = (roadWidth + 1 - elementInfo.width)
         const randomXCoord = Math.floor(Math.random() * (roadWidth + 1));
         newCoordX = direction === 0 ? -randomXCoord : randomXCoord;
         newCoordY = -innitialCoordY
+        element.style.display = 'initial'
+        elementInfo.visible = true
     }
 
-    elementCoords.y = newCoordY;
-    elementCoords.x = newCoordX
+    elementInfo.coords.y = newCoordY;
+    elementInfo.coords.x = newCoordX
     element.style.transform = `translate(${newCoordX}px, ${newCoordY}px)`
 }
 
@@ -164,6 +175,10 @@ function treesAnimation () {
 
         tree.style.transform = `translate(${coords.x}px,${newCoordY}px)`
     }
+}
+
+function updateGameScore (number) {
+    gameScoreElement.textContent = number
 }
 
 animationId = requestAnimationFrame(startGame)

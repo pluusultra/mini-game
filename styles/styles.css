@@ -68,4 +68,13 @@ body {
   border: 1px solid red;
 }
 
+.game-score {
+  position: absolute;
+  top: 10px;
+  left: 35%;
+  font-size: 40px;
+  text-transform: uppercase;
+  color: white;
+}
+
 /*# sourceMappingURL=styles.css.map */
