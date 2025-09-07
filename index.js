@@ -1,22 +1,18 @@
 const trees = document.querySelectorAll('.tree')
 const road = document.querySelector('.road')
 const coin = document.querySelector('.coin')
-
 const player = document.querySelector('.player')
+
 const playerInfo = {
-    width: coin.clientWidth / 2,
-    height: player.clientHeight,
-    coords: getCoords(player),
+    ...createElementInfo(player),
     move: {
         moveRight: null,
         moveLeft: null,
     },
 }
+const coinInfo = createElementInfo(coin)
 
 const roadWidth = road.clientWidth / 2
-const coinCoords = getCoords(coin)
-const coinWidth = coin.clientWidth / 2
-const coinHeight = coin.clientHeight
 let speed = 10;
 const treesCoords = []
 
@@ -54,18 +50,26 @@ document.addEventListener('keyup', (event) => {
     }
 })
 
-function checkCollision() {
-    const playerYTop = playerInfo.coords.y
-    const playerYBottom = playerInfo.coords.y + playerInfo.height;
+function createElementInfo (element) {
+    return {
+        coords: getCoords(element),
+        width: element.clientWidth / 2,
+        height: element.clientHeight,
+    }
+}
 
-    const playerXLeft = playerInfo.coords.x - playerInfo.width;
-    const playerXRight = playerInfo.coords.x + playerInfo.width;
+function checkCollision(element1Info, element2Info) {
+    const playerYTop = element1Info.coords.y
+    const playerYBottom = element1Info.coords.y + playerInfo.height;
 
-    const coinYTop = coinCoords.y;
-    const coinYBottom = coinCoords.y + coinHeight;
+    const playerXLeft = element1Info.coords.x - playerInfo.width;
+    const playerXRight = element1Info.coords.x + playerInfo.width;
 
-    const coinXLeft = coinCoords.x - coinWidth;
-    const coinXRight = coinCoords.x + coinWidth
+    const coinYTop = element2Info.coords.y;
+    const coinYBottom = element2Info.coords.y + coinInfo.height;
+
+    const coinXLeft = element2Info.coords.x - coinInfo.width;
+    const coinXRight = element2Info.coords.x + coinInfo.width
 
     if (playerYTop > coinYBottom || playerYBottom < coinYTop) {
         return false
@@ -83,8 +87,8 @@ function startMoveToRight () {
         return
     }
 
-    player.style.transform = `translate(${playerInfo.coords.x + 5}px, ${playerInfo.coords.y}px)`
     playerInfo.coords.x += 5
+    movePlayer(playerInfo.coords.x, playerInfo.coords.y)
     playerInfo.move.moveRight = requestAnimationFrame(startMoveToRight)
 }
 
@@ -94,15 +98,24 @@ function startMoveToLeft () {
     if (playerInfo.coords.x < -roadWidth + playerInfo.width) {
         return
     }
-    player.style.transform = `translate(${playerInfo.coords.x - 5}px, ${playerInfo.coords.y}px) scaleX(-1)`
     playerInfo.coords.x -= 5;
+    movePlayer(playerInfo.coords.x, playerInfo.coords.y, 'left')
     playerInfo.move.moveLeft = requestAnimationFrame(startMoveToLeft)
 }
 
+function movePlayer (x, y, side) {
+    if (side === 'left') {
+        console.log('left')
+        player.style.transform = `translate(${x}px, ${y}px) scaleX(-1)`
+    } else {
+        player.style.transform = `translate(${x}px, ${y}px)`
+    }
+}
+
 function startGame() {
-    console.log(checkCollision())
+    console.log(checkCollision(playerInfo, coinInfo))
     treesAnimation()
-    elementAnimation(coin, coinCoords, coinWidth, 1000)
+    elementAnimation(coin, coinInfo.coords, coinInfo.width, 1000)
     animationId = requestAnimationFrame(startGame)
 }
 
